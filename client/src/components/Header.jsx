@@ -11,14 +11,14 @@ import Avatar from "./Avatar";
 **/
 
 const Header = () => {
-    const user = true; // Simulates user authentication status
+    const user = false; // Simulates user authentication status
 
     // Utility for active class on NavLink
     const activeLinkClasses = (isActive) =>
         `relative text-white text-md transition-all bg-slate-600/50 py-2 px-4 rounded-lg duration-200 hover:bg-slate-600/70 ${isActive ? "bg-slate-700/90" : ""}`;
 
     return (
-        <div className="w-full top-0 left-0 absolute">
+        <div className="w-full top-0 left-0 absolute z-10">
             <div className="flex justify-between items-center gap-4 px-4 py-2">
                 {/* Logo and Branding */}
                 <Link to={ROUTES.HOME}>
@@ -61,7 +61,7 @@ const Header = () => {
                         ) : (
                             <>
                                 {/* Login Button */}
-                                <div className="flex items-center justify-center gap-2 bg-vegetation text-white py-2 px-4 rounded-full cursor-pointer hover:bg-vegetation/80 transition-colors duration-200">
+                                <div className="flex items-center justify-center gap-2 bg-green-500 text-white py-2 px-4 rounded-full cursor-pointer hover:bg-green-500/80 transition-colors duration-200">
                                     {MENU_ITEMS.LOGIN}
                                     <IoIosLogIn className="h-4 w-4" />
                                 </div>

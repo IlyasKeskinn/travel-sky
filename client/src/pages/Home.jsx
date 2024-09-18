@@ -1,7 +1,14 @@
-const Home = () => {
-  return (
-    <div></div>
-  )
-}
+import FlightBookingForm from "@/components/FlghtBookingForm";
+import Hero from "@/components/Hero";
 
-export default Home
+const Home = () => {
+
+  return (
+    <>
+      <Hero />
+      <FlightBookingForm />
+    </>
+  );
+};
+
+export default Home;
