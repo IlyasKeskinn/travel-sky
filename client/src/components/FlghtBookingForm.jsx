@@ -1,83 +1,59 @@
 import customSelectStyles from '@/styles/customSelect';
-import { useState } from 'react';
-import { FaExchangeAlt } from 'react-icons/fa';
+import debounce from 'lodash/debounce';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
+import { useCallback, useState } from 'react';
+import { FaExchangeAlt } from 'react-icons/fa';
+import { validateLocationsForm } from '@/helpers/validateLocationsForm';
+import { fetchLocationsByIATA } from '@/services/locationService';
 import 'react-datepicker/dist/react-datepicker.css';
 
-//dummy data
-const locations = [
-    { value: 'AMS', label: 'Amsterdam' },
-    { value: 'nyc', label: 'New York City' },
-    { value: 'la', label: 'Los Angeles' },
-    { value: 'sf', label: 'San Francisco' },
-];
 
-/**
- * The main component of the booking form.
- *
- * Handles the state of the departure and arrival locations, departure and return dates, and the trip type.
- *
- **/
+// The main component of the booking form.
+// Handles the state of the departure and arrival locations, departure and return dates, and the trip type.
+
 const FlightBookingForm = () => {
-
-    //  The trip type can be either 'one-way' or 'round-trip'.
-
+    //The trip type can be either 'one-way' or 'round-trip'.
     const [tripType, setTripType] = useState('round-trip');
-
-
-    // The departure location is the location from which the flight departs.
-    const [departureLocation, setDepartureLocation] = useState(locations[0]);
-
-
-    //      The arrival location is the location to which the flight arrives.
-
+    //The departure location is the location from which the flight departs.
+    const [departureLocation, setDepartureLocation] = useState({ value: 'AMS', label: 'Amsterdam, The Netherlands' });
+    //The arrival location is the location to which the flight arrives.
     const [arrivalLocation, setArrivalLocation] = useState(null);
-
     // The departure date is the date on which the flight departs.
-
     const [departureDate, setDepartureDate] = useState(null);
-
     // The return date is the date on which the flight returns./
     const [returnDate, setReturnDate] = useState(null);
 
     //The errors object contains the errors for each field.
+    const [errors, setErrors] = useState({});
 
-    const [errors, setErrors] = useState({
-        departureLocation: '',
-        arrivalLocation: '',
-        departureDate: '',
-        returnDate: '',
-    });
+    const [locations, setLocations] = useState([]);  // Dynamically updated list of locations
 
-    // Validates the form and returns true if the form is vali
-    const validateForm = () => {
-        const newErrors = {};
 
-        // Validation checks
-        if (!departureLocation) newErrors.departureLocation = 'Departure location is required.';
-        if (!arrivalLocation) newErrors.arrivalLocation = 'Arrival location is required.';
-        if (!departureDate) newErrors.departureDate = 'Departure date is required.';
-        if (tripType === 'round-trip' && !returnDate) newErrors.returnDate = 'Return date is required for round-trip.';
-        if (returnDate && departureDate && returnDate < departureDate) {
-            // If return date is before departure date, reset return date and set error
-            setReturnDate(null);
-            newErrors.returnDate = 'Return date cannot be earlier than departure date.';
-        }
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+    // Debounced function for API call
+    const debouncedFetchLocations = useCallback(
+        debounce((iata) => {
+            if (iata) fetchLocationsByIATA(iata, setLocations);
+        }, 300),
+        []
+    );
+    
+    // Handle input changes for arrival location (fetch locations dynamically)
+    const handleInputChange = (inputValue) => {
+        debouncedFetchLocations(inputValue);
     };
 
     // Handles the form submission.
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validateForm()) {
+        const newErrors = validateLocationsForm(departureLocation, arrivalLocation, departureDate, returnDate, tripType);
+        setErrors(newErrors);
+        if (Object.keys(newErrors).length === 0) {
             console.log({ departureLocation, arrivalLocation, departureDate, returnDate });
         }
     };
 
-    //   Handles the departure location change.
+    //Handles the departure location change.
     const handleDepartureLocationChange = (selectedOption) => {
         setDepartureLocation(selectedOption);
         setErrors(prevErrors => ({ ...prevErrors, departureLocation: '' }));
@@ -100,7 +76,6 @@ const FlightBookingForm = () => {
         setReturnDate(date);
         setErrors(prevErrors => ({ ...prevErrors, returnDate: '' }));
     };
-
 
     // Swap departure and arrival locations
     const swapLocations = () => {
@@ -148,8 +123,9 @@ const FlightBookingForm = () => {
                                         <Select
                                             id="departureLocation"
                                             value={departureLocation}
-                                            onChange={handleDepartureLocationChange}
-                                            options={locations.slice(1)}
+                                            onChange={(option) => handleDepartureLocationChange(option)}
+                                            onInputChange={handleInputChange}
+                                            options={locations}
                                             placeholder="Departure Location"
                                             isSearchable
                                             styles={customSelectStyles}
@@ -177,8 +153,9 @@ const FlightBookingForm = () => {
                                         <Select
                                             id="arrivalLocation"
                                             value={arrivalLocation}
-                                            onChange={handleArrivalLocationChange}
-                                            options={locations.slice(1)}
+                                            onChange={(option) => handleArrivalLocationChange(option)}
+                                            onInputChange={handleInputChange}
+                                            options={locations}
                                             placeholder="Arrival Location"
                                             isSearchable
                                             className="w-full"
@@ -191,7 +168,6 @@ const FlightBookingForm = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className='md:flex items-center justify-between gap-2'>
                                 <div className="relative w-full flex-1 items-center">
                                     <div>

@@ -1,8 +1,8 @@
 import { Link, NavLink } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
 import { IoIosLogIn } from "react-icons/io";
-import { ROUTES } from "@/constants/routes";
-import { MENU_ITEMS } from "@/constants/menuItems";
+import { ROUTES } from "@/config/routes";
+import { MENU_ITEMS } from "@/config/menuItems";
 import Avatar from "./Avatar";
 
 /**
