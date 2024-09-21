@@ -7,13 +7,26 @@ import { fetchFlights } from '@/services/fetchFlights';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+
 
 const FlightResult = () => {
     const [activeTab, setActiveTab] = useState('departure'); // State to track the active tab
     const location = useLocation(); // Access location object to retrieve fetch URLs
+    const navigate = useNavigate(); // Initialize useNavigate
     const fetchURL = location.state?.fetchURL; // URL for fetching departure flights
     const returnFetchURL = location.state?.returnFetchURL; // URL for fetching return flights
     const { ref, inView } = useInView(); // Intersection observer for infinite scroll
+
+    console.log(fetchURL);
+
+
+    // Redirect if fetchURL is not present
+    useEffect(() => {
+        if (!fetchURL) {
+            navigate('/'); // Redirect to homepage
+        }
+    }, [fetchURL, returnFetchURL, navigate]);
 
 
     // Fetch departure flights using infinite query
@@ -28,6 +41,7 @@ const FlightResult = () => {
         queryKey: ['flights', fetchURL],
         queryFn: ({ pageParam = 0 }) => fetchFlights({ pageParam, fetchURL }),
         getNextPageParam: (lastPage, allPages) => lastPage.flights.length > 0 ? allPages.length + 1 : undefined,
+        enabled: !!fetchURL
     });
 
     // Fetch return flights using infinite query
@@ -114,7 +128,6 @@ const FlightResult = () => {
                     />
                 )}
             </div>
-
             <ScrollToTop />
         </>
     );
