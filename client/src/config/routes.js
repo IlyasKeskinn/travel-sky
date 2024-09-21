@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: "/",
-  SEARCH_FLIGHTS: "/search_flights",
+  FLIGHT_RESULT: "/flight-results",
+  SEARCH_FLIGHTS: "/search-flights",
   FLIGHTS: "/flights",
   LOGIN: "/login",
   PROFILE: "/profile",
