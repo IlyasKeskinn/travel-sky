@@ -6,7 +6,7 @@ import { flightFilterAtom } from '@/atoms/flightFilter';
 import { useRecoilValue } from 'recoil';
 
 // FlightList component for displaying a list of flights
-const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, ref, loadingMessage, selectedFlight, onSelectFlight }) => {
+const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, ref, loadingMessage, selectedFlight, onSelectFlight, isReturnFlight }) => {
     // Get the current flight filter state from Recoil
     const flightFilter = useRecoilValue(flightFilterAtom);
 
@@ -19,14 +19,30 @@ const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, re
 
     // Show NoFlightsFound component if there are no flights available
     if (flights.length === 0) return <NoFlightsFound />;
+
+    const departureLocation = isReturnFlight ? flightFilter.arrivalLocation : flightFilter.departureLocation;
+    const arrivalLocation = isReturnFlight ? flightFilter.departureLocation : flightFilter.arrivalLocation;
+
+
     return (
         <>
-            {flights.map((flight) => (
-                <FlightTile key={flight.id} flight={flight} departureLocation={flightFilter.arrivalLocation} arivalLocation={flightFilter.departureLocation}
-                    onSelectFlight={onSelectFlight}
-                    selected={selectedFlight?.id === flight.id} // Check if this flight is selected/
-                />
-            ))}
+            {flights.map((flight) => {
+
+                const updatedFlight = {
+                    ...flight,
+                    departureLocation,
+                    arrivalLocation
+                };
+
+                return (
+                    <FlightTile
+                        key={flight.id}
+                        flight={updatedFlight}
+                        onSelectFlight={onSelectFlight}
+                        selected={selectedFlight?.id === flight.id}
+                    />
+                );
+            })}
             {fetchNextPage && <p>{loadingMessage}</p>}
             {hasNextPage && <div ref={ref} />}
         </>
@@ -44,4 +60,7 @@ FlightList.propTypes = {
     hasNextPage: PropTypes.bool,
     ref: PropTypes.object,
     loadingMessage: PropTypes.string,
+    selectedFlight: PropTypes.object,
+    onSelectFlight: PropTypes.func,
+    isReturnFlight: PropTypes.bool
 };

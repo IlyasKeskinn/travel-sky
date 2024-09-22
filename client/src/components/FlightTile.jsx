@@ -2,17 +2,23 @@ import Proptypes from "prop-types"
 import { FaPlane, FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa"
 import { formatInTimeZone } from 'date-fns-tz';
 
-const FlightTile = ({ flight, arivalLocation, departureLocation, onSelectFlight, selected }) => {
+const FlightTile = ({ flight, onSelectFlight, selected, isShowBookingButton = true }) => {
     // Format the schedule date and time
     const formattedDateTime = formatInTimeZone(flight.scheduleDateTime, "Asia/Kolkata", "dd MMM yyyy hh:mm a");
+
+
+
+
     return (
         <div className={`relative bg-white w-full p-4 mb-4 rounded-lg shadow-lg border-2 transition-colors duration-150 ${selected ? 'border-green-600' : 'hover:border-green-300'}`}
             onClick={() => onSelectFlight(flight)}
         >
 
+
+
             <div className='p-5'>
                 <div className='mb-4'>
-                    <h4 className='text-lg font-semibold'>{departureLocation.label} - {arivalLocation.label}</h4>
+                    <h4 className='text-lg font-semibold'>{flight.departureLocation.label} - {flight.arrivalLocation.label}</h4>
                     <h5>Time: {formattedDateTime}</h5>
                     <h5>Flight Name : {flight.flightName}</h5>
                 </div>
@@ -23,7 +29,7 @@ const FlightTile = ({ flight, arivalLocation, departureLocation, onSelectFlight,
                             <span>Departure</span>
                         </div>
                         <div>
-                            <span>Airport : {departureLocation.value}</span>
+                            <span>Airport : {flight.departureLocation.value}</span>
                         </div>
                     </div>
                     <div className="md:flex hidden items-center ">
@@ -42,17 +48,19 @@ const FlightTile = ({ flight, arivalLocation, departureLocation, onSelectFlight,
                             <span>Arrival</span>
                         </div>
                         <div>
-                            <span>Airport : {arivalLocation.value}</span>
+                            <span>Airport : {flight.arrivalLocation.value}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className='absolute bg-green-500 bottom-0 right-0   md:w-16 sm:w-10   h-full rounded-r-md flex items-center justify-center cursor-pointer text-white font-semibold shadow-md hover:bg-green-600 transition-colors duration-200 '>
-                <p className='text-white -rotate-90'>
-                    Book
-                </p>
-            </div>
+            {isShowBookingButton && (
+                <div className='absolute bg-green-500 bottom-0 right-0   md:w-16 sm:w-10   h-full rounded-r-md flex items-center justify-center cursor-pointer text-white font-semibold shadow-md hover:bg-green-600 transition-colors duration-200 '>
+                    <p className='text-white -rotate-90'>
+                        Book
+                    </p>
+                </div>
+            )}
 
         </div>
     )
@@ -61,8 +69,9 @@ const FlightTile = ({ flight, arivalLocation, departureLocation, onSelectFlight,
 
 FlightTile.propTypes = {
     flight: Proptypes.object,
-    arivalLocation: Proptypes.object,
-    departureLocation: Proptypes.object
+    onSelectFlight: Proptypes.func.isRequired,
+    selected: Proptypes.bool,
+    isShowBookingButton: Proptypes.bool
 }
 
 export default FlightTile

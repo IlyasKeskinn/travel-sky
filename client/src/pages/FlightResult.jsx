@@ -20,9 +20,6 @@ const FlightResult = () => {
     const returnFetchURL = location.state?.returnFetchURL; // URL for fetching return flights
     const { ref, inView } = useInView(); // Intersection observer for infinite scroll
 
-    console.log(fetchURL);
-
-
     // Redirect if fetchURL is not present
     useEffect(() => {
         if (!fetchURL) {
@@ -85,6 +82,7 @@ const FlightResult = () => {
 
     const handleSelectDeparture = (flight) => {
         setSelectedDepartureFlight(flight); // Set selected departure flight
+        
     };
 
     const handleSelectReturn = (flight) => {
@@ -140,6 +138,7 @@ const FlightResult = () => {
                         loadingMessage="Loading more return flights..."
                         selectedFlight={selectedReturnFlight} // Pass selected return flight
                         onSelectFlight={handleSelectReturn} // Pass function to update selected return flight
+                        isReturnFlight={true} 
                     />
                 )}
             </div>
