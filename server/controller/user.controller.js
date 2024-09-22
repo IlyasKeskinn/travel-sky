@@ -78,4 +78,9 @@ const signIn = async (req, res) => {
   }
 };
 
-module.exports = { signUp, signIn };
+const logout = async (req, res) => {
+  res.cookie("user", "", { maxAge: 1 });
+  res.status(200).json({ message: "User logout succesfully." });
+};
+
+module.exports = { signUp, signIn, logout };
