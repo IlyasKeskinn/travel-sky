@@ -68,10 +68,12 @@ const Header = () => {
                             ) : (
                                 <>
                                     {/* Login Button */}
-                                    <div className="flex items-center justify-center gap-2 bg-green-500 text-white py-2 px-4 rounded-full cursor-pointer hover:bg-green-500/80 transition-colors duration-200">
-                                        {MENU_ITEMS.LOGIN}
-                                        <IoIosLogIn className="h-4 w-4" />
-                                    </div>
+                                    <Link to={ROUTES.LOGIN}>
+                                        <div className="flex items-center justify-center gap-2 bg-green-500 text-white py-2 px-4 rounded-full cursor-pointer hover:bg-green-500/80 transition-colors duration-200">
+                                            {MENU_ITEMS.LOGIN}
+                                            <IoIosLogIn className="h-4 w-4" />
+                                        </div>
+                                    </Link>
                                 </>
                             )}
                         </div>

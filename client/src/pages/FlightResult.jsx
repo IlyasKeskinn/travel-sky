@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 
 const FlightResult = () => {
     const [activeTab, setActiveTab] = useState('departure'); // State to track the active tab
+    const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null); // Track selected departure flight
+    const [selectedReturnFlight, setSelectedReturnFlight] = useState(null); // Track selected return flight
     const location = useLocation(); // Access location object to retrieve fetch URLs
     const navigate = useNavigate(); // Initialize useNavigate
     const fetchURL = location.state?.fetchURL; // URL for fetching departure flights
@@ -81,6 +83,14 @@ const FlightResult = () => {
         }
     }, [inView, hasNextReturnPage, fetchNextReturnPage]);
 
+    const handleSelectDeparture = (flight) => {
+        setSelectedDepartureFlight(flight); // Set selected departure flight
+    };
+
+    const handleSelectReturn = (flight) => {
+        setSelectedReturnFlight(flight); // Set selected return flight
+    };
+
     return (
         <>
             <div className='bg-white pt-4 pb-4'>
@@ -113,6 +123,9 @@ const FlightResult = () => {
                         hasNextPage={hasNextPage}
                         ref={ref}
                         loadingMessage="Loading more flights..."
+                        selectedFlight={selectedDepartureFlight} // Pass selected departure flight
+                        onSelectFlight={handleSelectDeparture} // Pass function to update selected departure flight
+
                     />
                 )}
 
@@ -125,6 +138,8 @@ const FlightResult = () => {
                         hasNextPage={hasNextReturnPage}
                         ref={ref}
                         loadingMessage="Loading more return flights..."
+                        selectedFlight={selectedReturnFlight} // Pass selected return flight
+                        onSelectFlight={handleSelectReturn} // Pass function to update selected return flight
                     />
                 )}
             </div>

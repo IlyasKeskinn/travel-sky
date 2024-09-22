@@ -6,7 +6,7 @@ import { flightFilterAtom } from '@/atoms/flightFilter';
 import { useRecoilValue } from 'recoil';
 
 // FlightList component for displaying a list of flights
-const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, ref, loadingMessage }) => {
+const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, ref, loadingMessage, selectedFlight, onSelectFlight }) => {
     // Get the current flight filter state from Recoil
     const flightFilter = useRecoilValue(flightFilterAtom);
 
@@ -22,7 +22,10 @@ const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, re
     return (
         <>
             {flights.map((flight) => (
-                <FlightTile key={flight.id} flight={flight} departureLocation={flightFilter.arrivalLocation} arivalLocation={flightFilter.departureLocation} />
+                <FlightTile key={flight.id} flight={flight} departureLocation={flightFilter.arrivalLocation} arivalLocation={flightFilter.departureLocation}
+                    onSelectFlight={onSelectFlight}
+                    selected={selectedFlight?.id === flight.id} // Check if this flight is selected/
+                />
             ))}
             {fetchNextPage && <p>{loadingMessage}</p>}
             {hasNextPage && <div ref={ref} />}

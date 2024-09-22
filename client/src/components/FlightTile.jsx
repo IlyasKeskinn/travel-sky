@@ -2,11 +2,14 @@ import Proptypes from "prop-types"
 import { FaPlane, FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa"
 import { formatInTimeZone } from 'date-fns-tz';
 
-const FlightTile = ({ flight, arivalLocation, departureLocation }) => {
+const FlightTile = ({ flight, arivalLocation, departureLocation, onSelectFlight, selected }) => {
     // Format the schedule date and time
     const formattedDateTime = formatInTimeZone(flight.scheduleDateTime, "Asia/Kolkata", "dd MMM yyyy hh:mm a");
     return (
-        <div className='relative bg-white w-full p-4 mb-4 rounded-lg shadow-lg border hover:border-green-100  transition-colors duration-150'>
+        <div className={`relative bg-white w-full p-4 mb-4 rounded-lg shadow-lg border-2 transition-colors duration-150 ${selected ? 'border-green-600' : 'hover:border-green-300'}`}
+            onClick={() => onSelectFlight(flight)}
+        >
+
             <div className='p-5'>
                 <div className='mb-4'>
                     <h4 className='text-lg font-semibold'>{departureLocation.label} - {arivalLocation.label}</h4>
@@ -45,7 +48,7 @@ const FlightTile = ({ flight, arivalLocation, departureLocation }) => {
                 </div>
             </div>
 
-            <div className='absolute bg-green-500 bottom-0 right-0   md:w-16 sm:w-10   h-full  rounded-lg flex items-center justify-center cursor-pointer text-white font-semibold shadow-md hover:bg-green-600 transition-colors duration-200 '>
+            <div className='absolute bg-green-500 bottom-0 right-0   md:w-16 sm:w-10   h-full rounded-r-md flex items-center justify-center cursor-pointer text-white font-semibold shadow-md hover:bg-green-600 transition-colors duration-200 '>
                 <p className='text-white -rotate-90'>
                     Book
                 </p>

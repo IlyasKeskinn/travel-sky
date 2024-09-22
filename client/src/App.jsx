@@ -3,6 +3,7 @@ import { ROUTES } from "./config/routes";
 import MainLayout from "./layout/MainLayout"
 import Home from "./pages/Home"
 import FlightResult from "./pages/FlightResult";
+import LoginPage from "./pages/LoginPage";
 
 
 
@@ -14,6 +15,7 @@ function App() {
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.FLIGHT_RESULT} element={<FlightResult />} />
       </Route>
+      <Route path={ROUTES.LOGIN} element={<LoginPage />} />
     </Routes>
   );
 }
