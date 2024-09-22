@@ -9,11 +9,11 @@ const signUp = async (req, res) => {
 
   try {
     if (!name || !email || !password) {
-      res.status(400).json({ message: "All fields are required" });
+      res.status(400).json({ error: "All fields are required" });
     }
     // Validate the email format
     if (!isValidEmail(email)) {
-      return res.status(400).json({ message: "Email is not valid" });
+      return res.status(400).json({ error: "Email is not valid" });
     }
 
     // Check if the email already exists in the database
@@ -22,7 +22,7 @@ const signUp = async (req, res) => {
     });
 
     if (existingEmail) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ error: "Email already exists" });
     }
 
     // Hash the password
@@ -48,33 +48,38 @@ const signUp = async (req, res) => {
         .status(201)
         .json({ _id: newUser._id, email: newUser.email, name: newUser.name });
     } else {
-      res.status(400).json({ message: "Failed to create user" });
+      res.status(400).json({ error: "Failed to create user" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
 const signIn = async (req, res) => {
   const { email, password } = req.body;
+  
   try {
     if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ error: "All fields are required" });      
     }
+
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res
         .status(400)
-        .json({ message: "There is no user associated with this email!" });
+        .json({ error: "There is no user associated with this email!" });
     }
+
     const isMatch = await bcyrpt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
+    
+
     generateTokenAndCookie(user._id, res);
     res.status(200).json({ _id: user._id, email: user.email, name: user.name });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 

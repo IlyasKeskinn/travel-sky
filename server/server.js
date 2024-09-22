@@ -3,15 +3,20 @@ const cors = require("cors");
 const connectMongoDB = require("./lib/db");
 const dotenv = require("dotenv");
 const app = express();
-const port = process.env.PORT || 3000; // Set the port from environment variables or default to 3000  
+const port = process.env.PORT || 3000; // Set the port from environment variables or default to 3000
 
 dotenv.config();
 
 // Connect to MongoDB database
 connectMongoDB();
 
+const corsOptions = {
+  origin: process.env.FRONTEND_SERVER || "http://localhost:5173",
+  credentials: true,
+};
+
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router';
 import { ROUTES } from '@/config/routes';
 import { PlaneIcon } from 'lucide-react';
 import { format } from "date-fns";
-import { API_ROUTES } from "@/config/api";
+import {  SCHIPOL_API_ROUTES } from "@/config/api";
 import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -67,7 +67,7 @@ const FlightBookingForm = () => {
 
 
             // Create the API URL
-            let fetchURL = `${API_ROUTES.FLIGHTS}?&flightDirection=${direction}&scheduleDate=${formattedDepartureDate}&route=${route}`;
+            let fetchURL = `${SCHIPOL_API_ROUTES.FLIGHTS}?&flightDirection=${direction}&scheduleDate=${formattedDepartureDate}&route=${route}`;
 
             // If round trip, create a separate URL for the return flight
             if (flightFilter.tripType === 'round-trip') {
@@ -76,7 +76,7 @@ const FlightBookingForm = () => {
                 // If it's an arrival flight, the return leg is a departure flight, so set it to "D"; if not, set it to "A".
                 const returnDirection = flightFilter.isArrivalFlight ? "D" : "A";
                 
-                const returnFetchURL = `${API_ROUTES.FLIGHTS}?flightDirection=${returnDirection}&scheduleDate=${formattedReturnDate}&route=${route}`;
+                const returnFetchURL = `${SCHIPOL_API_ROUTES.FLIGHTS}?flightDirection=${returnDirection}&scheduleDate=${formattedReturnDate}&route=${route}`;
 
                 // Navigate to the results page
                 navigate(ROUTES.FLIGHT_RESULT, { state: { fetchURL, returnFetchURL } });

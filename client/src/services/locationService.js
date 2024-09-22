@@ -1,4 +1,4 @@
-import { API_ROUTES } from "@/config/api";
+import { SCHIPOL_API_ROUTES } from "@/config/api";
 import axios from "axios";
 
 // Schiphol API credentials
@@ -6,9 +6,9 @@ const apiId = import.meta.env.VITE_SCHIPOL_API_ID;
 const apiKey = import.meta.env.VITE_SCHIPOL_API_KEY;
 
 // Fetch locations by IATA code using the Schiphol Public Flights API
-export const fetchLocationsByIATA = async (iata,setLocations) => {
+export const fetchLocationsByIATA = async (iata, setLocations) => {
   try {
-    const response = await axios.get(`${API_ROUTES.DESTINATIONS}/${iata}`, {
+    const response = await axios.get(`${SCHIPOL_API_ROUTES.DESTINATIONS}/${iata}`, {
       headers: {
         ResourceVersion: "v4", // API version
         app_id: apiId,

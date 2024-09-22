@@ -4,6 +4,8 @@ import { IoIosLogIn } from "react-icons/io";
 import { ROUTES } from "@/config/routes";
 import { MENU_ITEMS } from "@/config/menuItems";
 import Avatar from "./Avatar";
+import { useRecoilValue } from "recoil";
+import userAtom from "@/atoms/user";
 
 /**
  * The header component of the application.
@@ -11,10 +13,9 @@ import Avatar from "./Avatar";
 **/
 
 const Header = () => {
-    const user = false; // Simulates user authentication status
+    const user = useRecoilValue(userAtom); // Simulates user authentication status
+    
     const location = useLocation(); // Get the current location
-
-
 
     // Utility for active class on NavLink
     const activeLinkClasses = (isActive) =>
@@ -50,7 +51,7 @@ const Header = () => {
                                     <p className="hidden md:block text-white">{MENU_ITEMS.SEARCH}</p>
                                 </div>
                             </NavLink>
-                            {user ? (
+                            {user?._id ? (
                                 <>
                                     {/* Flights Menu Item */}
                                     <NavLink
