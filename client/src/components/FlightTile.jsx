@@ -1,21 +1,16 @@
 import Proptypes from "prop-types"
 import { FaPlane, FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa"
-import { formatInTimeZone } from 'date-fns-tz';
+import { format, isBefore } from "date-fns";
 
 const FlightTile = ({ flight, onSelectFlight, selected, isShowBookingButton = true }) => {
     // Format the schedule date and time
-    const formattedDateTime = formatInTimeZone(flight.scheduleDateTime, "Asia/Kolkata", "dd MMM yyyy hh:mm a");
+    const formattedDateTime = format(new Date(flight.scheduleDateTime), 'dd MMM yyyy hh:mm a');
 
-
-
+    // Check if the flight time is in the past
+    const isFlightInThePast = isBefore(new Date(flight.scheduleDateTime), new Date());
 
     return (
-        <div className={`relative bg-white w-full p-4 mb-4 rounded-lg shadow-lg border-2 transition-colors duration-150 ${selected ? 'border-green-600' : 'hover:border-green-300'}`}
-            onClick={() => onSelectFlight(flight)}
-        >
-
-
-
+        <div className={`relative bg-white w-full p-4 mb-4 rounded-lg shadow-lg border-2 transition-colors duration-150 ${selected ? 'border-green-600' : 'hover:border-green-300'}`}>
             <div className='p-5'>
                 <div className='mb-4'>
                     <h4 className='text-lg font-semibold'>{flight.departureLocation.label} - {flight.arrivalLocation.label}</h4>
@@ -54,13 +49,22 @@ const FlightTile = ({ flight, onSelectFlight, selected, isShowBookingButton = tr
                 </div>
             </div>
 
-            {isShowBookingButton && (
-                <div className='absolute bg-green-500 bottom-0 right-0   md:w-16 sm:w-10   h-full rounded-r-md flex items-center justify-center cursor-pointer text-white font-semibold shadow-md hover:bg-green-600 transition-colors duration-200 '>
+            {isShowBookingButton && !isFlightInThePast && (
+                <div className='absolute bg-green-500 bottom-0 right-0   md:w-16 sm:w-10   h-full rounded-r-md flex items-center justify-center cursor-pointer text-white font-semibold shadow-md hover:bg-green-600 transition-colors duration-200 '
+                    onClick={() => onSelectFlight(flight)}
+                >
                     <p className='text-white -rotate-90'>
                         Book
                     </p>
                 </div>
             )}
+
+            {isFlightInThePast && (
+                <p className="text-red-500 absolute bottom-2 right-2">
+                    Flight time has passed
+                </p>
+            )}
+
 
         </div>
     )

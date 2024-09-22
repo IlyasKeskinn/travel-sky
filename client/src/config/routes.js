@@ -5,4 +5,5 @@ export const ROUTES = {
   FLIGHTS: "/profile",
   LOGIN: "/login",
   PROFILE: "/profile",
+  BOOK_CONFIRM: "/book-confirm",
 };

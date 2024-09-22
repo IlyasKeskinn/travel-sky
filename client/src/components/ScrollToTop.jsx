@@ -32,7 +32,7 @@ const ScrollToTop = () => {
         // Render the button if it should be shown
         showScrollToTop && (
             <div
-                className="fixed bottom-5 right-5 cursor-pointer -rotate-90 h-12 w-12 bg-green-500 shadow-lg rounded-full flex justify-center items-center hover:bg-green-600 transition-colors duration-200"
+                className="fixed bottom-4 left-4 cursor-pointer -rotate-90 h-12 w-12 bg-green-500 shadow-lg rounded-full flex justify-center items-center hover:bg-green-600 transition-colors duration-200"
                 onClick={scrollToTop}
             >
                 <Lottie
