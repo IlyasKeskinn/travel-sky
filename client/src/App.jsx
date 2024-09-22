@@ -7,11 +7,14 @@ import LoginPage from "./pages/LoginPage";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/user";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
+import UserProfile from "./pages/UserProfile";
 
 
 
 function App() {
   const user = useRecoilValue(userAtom); // Get the current user from Recoil state
+  const isUserLoggedIn = user?._id ? true : false;
+  
 
   return (
     <Routes>
@@ -22,13 +25,14 @@ function App() {
       </Route>
 
       {/* Protected route for login page, accessible only if user is not logged in */}
-      <Route element={<ProtectedRoutes condition={!user?._id} routes={ROUTES.LOGIN} />}>
+      <Route element={<ProtectedRoutes condition={!isUserLoggedIn} routes={ROUTES.HOME} />}>
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       </Route>
 
       {/* Protected route for authenticated users */}
-      <Route element={<ProtectedRoutes condition={user?.id} routes={ROUTES.LOGIN} />}>
-        <Route path="/placheholder" element={<MainLayout />}>
+      <Route element={<ProtectedRoutes condition={isUserLoggedIn} routes={ROUTES.LOGIN} />}>
+        <Route element={<MainLayout />}>
+          <Route path={ROUTES.PROFILE} element={<UserProfile />} />
         </Route>
       </Route>
 

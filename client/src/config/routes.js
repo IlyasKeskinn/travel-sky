@@ -2,7 +2,7 @@ export const ROUTES = {
   HOME: "/",
   FLIGHT_RESULT: "/flight-results",
   SEARCH_FLIGHTS: "/search-flights",
-  FLIGHTS: "/flights",
+  FLIGHTS: "/profile",
   LOGIN: "/login",
   PROFILE: "/profile",
 };

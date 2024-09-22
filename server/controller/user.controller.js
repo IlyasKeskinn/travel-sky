@@ -57,10 +57,10 @@ const signUp = async (req, res) => {
 
 const signIn = async (req, res) => {
   const { email, password } = req.body;
-  
+
   try {
     if (!email || !password) {
-      return res.status(400).json({ error: "All fields are required" });      
+      return res.status(400).json({ error: "All fields are required" });
     }
 
     const user = await User.findOne({ email: email.toLowerCase() });
@@ -74,7 +74,6 @@ const signIn = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
-    
 
     generateTokenAndCookie(user._id, res);
     res.status(200).json({ _id: user._id, email: user.email, name: user.name });
@@ -84,8 +83,12 @@ const signIn = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.cookie("user", "", { maxAge: 1 });
-  res.status(200).json({ message: "User logout succesfully." });
+  try {
+    res.cookie("user", "", { maxAge: 1 });
+    res.status(204).json({ message: "User logout succesfully." });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 };
 
 module.exports = { signUp, signIn, logout };
