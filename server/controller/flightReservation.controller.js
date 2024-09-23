@@ -55,4 +55,48 @@ const createFlightReservation = async (req, res) => {
   }
 };
 
-module.exports = { createFlightReservation };
+// Function to fetch all flights reserved by the authenticated user
+const fetchUserFlights = async (req, res) => {
+  try {
+    // Retrieve the user ID from the request object
+    const userId = req.user._id;
+
+    // Check if user ID is present
+    if (!userId) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Fetch all flight reservations for the specified user ID
+    const flights = await FlightReservation.find({ User: userId });
+
+    // Return the list of flights with a 200 status code
+    return res.status(200).json(flights);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+// Function to fetch a flight reservation by its booking number
+const fetchFlightByBookingNumber = async (req, res) => {
+  try {
+    // Retrieve the booking number from the request parameters
+    const bookingNumber = req.params.bookingNumber;
+
+    // Find the flight reservation that matches the booking number
+    const flight = await FlightReservation.findOne({ bookingNumber });
+
+    if (!flight) {
+      return res.status(404).json({ error: "Flight not found" });
+    }
+    
+    // Return the flight reservation with a 200 status code
+    return res.status(200).json(flight);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+module.exports = {
+  createFlightReservation,
+  fetchUserFlights,
+  fetchFlightByBookingNumber,
+};
