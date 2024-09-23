@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"; // Assuming you have an Accordion component
 import Loading from "@/components/Loading";
 import customSelectStyles from "@/styles/customSelect";
+import NoFlightsFound from "@/components/NoFlightsFound";
 
 
 
@@ -82,7 +83,7 @@ const Flights = () => {
     return (
         <div className="container mx-auto p-6">
             {flights.length === 0 ? (
-                <p>No flight reservations found.</p>
+                <NoFlightsFound descText="You don't have any reservations." />
             ) : (
                 <>
                     <Select

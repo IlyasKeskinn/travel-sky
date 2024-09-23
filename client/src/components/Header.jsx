@@ -14,7 +14,7 @@ import userAtom from "@/atoms/user";
 
 const Header = () => {
     const user = useRecoilValue(userAtom); // Simulates user authentication status
-    
+
     const location = useLocation(); // Get the current location
 
     // Utility for active class on NavLink
@@ -42,15 +42,6 @@ const Header = () => {
                     {/* Navigation Menu */}
                     <div id="header_menu">
                         <div id="header_menu_items" className="flex gap-4 items-center justify-between">
-                            {/* Search Flights Menu Item */}
-                            <NavLink
-                                to={ROUTES.SEARCH_FLIGHTS}
-                                className={({ isActive }) => activeLinkClasses(isActive)}>
-                                <div className="flex items-center gap-2">
-                                    <IoIosSearch className="text-white" size={"1.5rem"} />
-                                    <p className="hidden md:block text-white">{MENU_ITEMS.SEARCH}</p>
-                                </div>
-                            </NavLink>
                             {user?._id ? (
                                 <>
                                     {/* Flights Menu Item */}

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/config/routes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { selectedDepartureFlightAtom, selectedReturnFlightAtom } from '@/atoms/selectedFlights';
 import { flightFilterAtom } from '@/atoms/flightFilter';
 import { API_ROUTES } from '@/config/api';
@@ -22,13 +22,6 @@ const BookConfirm = () => {
     const { handleError } = useErrorHandler();
     const [showConfirmation, setShowConfirmation] = useState(false);
 
-
-    useEffect(() => {
-        // If the departure flight is not selected, redirect the user to the home page
-        if (!selectedDepartureFlight) {
-            navigate(ROUTES.HOME);
-        }
-    }, [selectedDepartureFlight, navigate]);
 
     const saveFlight = async (flight) => {
         try {

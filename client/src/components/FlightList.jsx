@@ -18,7 +18,7 @@ const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, re
     if (error) return <p>Error: {error.message}</p>;
 
     // Show NoFlightsFound component if there are no flights available
-    if (flights.length === 0) return <NoFlightsFound />;
+    if (flights.length === 0) return <NoFlightsFound descText='We couldn&apos;t find any flights matching your search.' />;
 
     const departureLocation = isReturnFlight ? flightFilter.arrivalLocation : flightFilter.departureLocation;
     const arrivalLocation = isReturnFlight ? flightFilter.departureLocation : flightFilter.arrivalLocation;
