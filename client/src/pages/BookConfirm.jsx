@@ -10,6 +10,7 @@ import useErrorHandler from "@/hooks/useErrorHandler";
 import FlightTile from '@/components/FlightTile';
 import axios from 'axios';
 import ReservationConfirmSuccess from '@/components/ReservationConfirmSuccess';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 
 const BookConfirm = () => {
@@ -21,10 +22,12 @@ const BookConfirm = () => {
     const resetFlightFilter = useResetRecoilState(flightFilterAtom);
     const { handleError } = useErrorHandler();
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 
     const saveFlight = async (flight) => {
         try {
+            setLoading(true);
             // Send a POST request to save the flight reservation to the API
             const response = await axios.post(API_ROUTES.CREATE_FLIGHT_RESERVATION, flight, {
                 withCredentials: true, // Include credentials with the request
@@ -32,6 +35,9 @@ const BookConfirm = () => {
         } catch (error) {
             // Call error handling if there is an error
             handleError(error);
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -78,14 +84,20 @@ const BookConfirm = () => {
                 </div>
             )}
             <div className="text-center">
-                <Button className="text-white" onClick={handleConfirmBooking}>
+                <Button className="text-white" onClick={handleConfirmBooking}
+                    disabled={loading}
+                >
+                    {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
                     Confirm Booking
                 </Button>
-                <Button className="bg-gray-500 hover:bg-gray-600 text-white ml-4" onClick={() => navigate(-1)}>
+                <Button
+                    className="bg-gray-500 hover:bg-gray-600 text-white ml-4" onClick={() => navigate(-1)}
+                    disabled={loading}
+                >
                     Go Back
                 </Button>
             </div>
-        </div>
+        </div >
     );
 };
 

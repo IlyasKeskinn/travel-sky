@@ -1,6 +1,8 @@
 const generateBookingNumber = require("../helpers/generateBookingNumber");
 const FlightReservation = require("../models/flightReservation.model");
-const User = require("../models/user.model");
+const mailFrom = process.env.MAIL_USER;
+const sendMailer = require("../helpers/sendMail");
+const boardingPassTemplate = require("../template/boardingPassTemplate");
 
 // Function to create a flight reservation
 const createFlightReservation = async (req, res) => {
@@ -22,9 +24,10 @@ const createFlightReservation = async (req, res) => {
     // Retrieve user ID and email from the request object
     const userId = req.user._id;
     const userEmail = req.user.email;
+    const user = req.user;
 
     // Check if user ID and email are available
-    if (!userId || !userEmail) {
+    if (!user || !userEmail) {
       return res.status(404).json({ error: "User not found" });
     }
 
@@ -51,6 +54,12 @@ const createFlightReservation = async (req, res) => {
     // Save the new flight reservation to the database
     await newFlightReservation.save();
 
+    await sendMailer.sendMail({
+      from: mailFrom,
+      to: userEmail,
+      subject: "Your Boarding Pass",
+      html: boardingPassTemplate(newFlightReservation, user),
+    });
     // Return the created flight reservation with a 201 status code
     return res.status(201).json(newFlightReservation);
   } catch (error) {

@@ -4,7 +4,8 @@ import { format } from "date-fns";
 
 
 const BoardingPass = ({ flight }) => {
-    const formattedDateTime = format(new Date(flight.createdAt), 'dd MMM yyyy hh:mm a');
+    const formattedReservationDate = format(new Date(flight.createdAt), 'dd MMM yyyy hh:mm a');
+    const formattedScheduleDate = format(new Date(flight.scheduleDateTime), 'dd MMM yyyy hh:mm a');
 
     return (
         <div className="w-full mx-auto my-5 bg-white shadow-lg rounded-lg overflow-hidden border border-gray-300 relative">
@@ -27,7 +28,7 @@ const BoardingPass = ({ flight }) => {
             </div>
 
             {/* Flight Info */}
-            <div className="p-5 grid grid-cols-3 gap-4">
+            <div className="p-5 grid md:grid-cols-3 grid-cols-1 gap-4">
                 <div className="flex flex-col items-center text-center">
                     <FaPlaneDeparture className="text-5xl mb-2" />
                     <h3 className="text-sm font-semibold">Departure</h3>
@@ -40,7 +41,7 @@ const BoardingPass = ({ flight }) => {
                     </div>
                     <div>
                         <h3 className="text-sm font-semibold">Reservation Date</h3>
-                        <p className="text-lg font-bold">{formattedDateTime}</p>
+                        <p className="text-lg font-bold">{formattedReservationDate}</p>
                     </div>
                 </div>
                 <div className="flex flex-col items-center">
@@ -58,10 +59,14 @@ const BoardingPass = ({ flight }) => {
             </div>
 
             {/* Boarding Details */}
-            <div className="p-5 grid grid-cols-2 gap-5">
+            <div className="p-5 grid md:grid-cols-3 grid-cols-1 gap-5">
                 <div className="text-center">
                     <h3 className="text-sm font-semibold text-gray-500">Terminal</h3>
                     <p className="text-lg font-bold">{flight.terminal}</p>
+                </div>
+                <div className="text-center">
+                    <h3 className="text-sm font-semibold text-gray-500">Date</h3>
+                    <p className="text-lg font-bold">{formattedScheduleDate}</p>
                 </div>
                 <div className="text-center">
                     <h3 className="text-sm font-semibold">Passenger</h3>
