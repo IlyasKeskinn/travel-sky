@@ -4,6 +4,8 @@ This project is a flight booking website developed using the MERN (MongoDB, Expr
 
 ## Description
 
+Project setup is at the bottom of the readme file
+
 It includes the following key features:
 
 - **User Authentication:** Users can sign up, log in, and manage their accounts.
@@ -12,6 +14,10 @@ It includes the following key features:
 - **Flight Details:** View detailed flight information.
 - **Reservation System:** Users can view their bookings.
 - **Send Boarding Pass via Email:** Flight boarding passes are sent to users who make reservations via email.
+- **Infinte Scroll:** Users can load more flight search results by scrolling. The `useInfiniteQuery` feature of the `react-query` library automates the pagination process. As users scroll to the bottom of the page, more flight data is loaded in the background and appended to the existing results. This allows users to view search results in a smoother experience, finding more flights without refreshing the page each time.
+
+[Watch the demo on YouTube](https://www.youtube.com/watch?v=duFUyMMiMw0)
+
 
 # Screenshots
 
@@ -326,3 +332,54 @@ Other Dependencies:
         └── boardingPassTemplate.js
 
 ```
+
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/travel-sky.git
+   cd travel-sky
+    ```
+   
+3. Install dependencies:
+
+  ```
+  cd client 
+  npm install
+
+  cd server
+  npm install
+  ```
+3. Set up environment variables: Create a .env file in the client and server directory:
+
+  client .env :
+  ```  
+  VITE_SCHIPOL_API_ID=YOUR_SCHIPOL_API_ID
+  VITE_SCHIPOL_API_KEY=YOUR_SCHIPOL_API_KEY
+  VITE_SCHIPOL_API_URL=https://api.schiphol.nl/public-flights
+  VITE_API_URL=YOUR_BACKEND_SERVER_URL
+  ```
+
+  server .env : 
+  ```
+  PORT=YOUR_PORT
+  JWT_SECRET_KEY=YOUR_JWT_SECRET
+  MONGO_URI=YOUR_MONGO_URI
+  MAIL_USER=EMAIL_HOST_USER
+  MAIL_PASSWORD=EMAIL_HOST_PASSWORD
+  ```
+
+
+4. Run the development server:
+  ```
+  cd server
+  npm run start
+  ```
+5. Run the client
+  ```
+  cd client
+  npm run dev
+  ```
+
