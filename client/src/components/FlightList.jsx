@@ -23,7 +23,6 @@ const FlightList = ({ flights, isFetching, error, fetchNextPage, hasNextPage, re
     const departureLocation = isReturnFlight ? flightFilter.arrivalLocation : flightFilter.departureLocation;
     const arrivalLocation = isReturnFlight ? flightFilter.departureLocation : flightFilter.arrivalLocation;
 
-
     return (
         <>
             {flights.map((flight) => {

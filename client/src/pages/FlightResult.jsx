@@ -2,6 +2,7 @@ import FlightBookingForm from '@/components/FlghtBookingForm';
 import ScrollToTop from '@/components/ScrollToTop';
 import FlightList from '@/components/FlightList';
 import Tab from '@/components/Tab';
+import FlightSelectionDialog from '@/components/FlightSelectionDialog';
 import { useInView } from 'react-intersection-observer';
 import { fetchFlights } from '@/services/fetchFlights';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -9,14 +10,15 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import FlightSelectionDialog from '@/components/FlightSelectionDialog';
 import { ROUTES } from '@/config/routes';
+import { selectedDepartureFlightAtom, selectedReturnFlightAtom } from '@/atoms/selectedFlights';
+import { useRecoilState } from 'recoil';
 
 
 const FlightResult = () => {
     const [activeTab, setActiveTab] = useState('departure'); // State to track the active tab
-    const [selectedDepartureFlight, setSelectedDepartureFlight] = useState(null); // Track selected departure flight
-    const [selectedReturnFlight, setSelectedReturnFlight] = useState(null); // Track selected return flight
+    const [selectedDepartureFlight, setSelectedDepartureFlight] = useRecoilState(selectedDepartureFlightAtom); // Track selected departure flight
+    const [selectedReturnFlight, setSelectedReturnFlight] = useRecoilState(selectedReturnFlightAtom); // Track selected return flight
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const location = useLocation(); // Access location object to retrieve fetch URLs
     const navigate = useNavigate(); // Initialize useNavigate
@@ -33,6 +35,7 @@ const FlightResult = () => {
 
 
     useEffect(() => {
+        setActiveTab('departure');
         setSelectedDepartureFlight(null);
         setSelectedReturnFlight(null);
         setIsDialogOpen(false);
@@ -92,6 +95,7 @@ const FlightResult = () => {
 
     const handleSelectDeparture = (flight) => {
         setSelectedDepartureFlight(flight);
+        localStorage.setItem('selectedDepartureFlight', JSON.stringify(flight));
         if (!returnFetchURL) {
             setIsDialogOpen(true); // Automatically open dialog if no return flight is needed
         }
@@ -99,16 +103,12 @@ const FlightResult = () => {
 
     const handleSelectReturn = (flight) => {
         setSelectedReturnFlight(flight);
+        localStorage.setItem('selectedReturnFlight', JSON.stringify(flight));
         setIsDialogOpen(true); // Open dialog when return flight is selected
     };
 
     const handleToConfirmBooking = () => {
-        navigate(ROUTES.BOOK_CONFIRM, {
-            state: {
-                departureFlight: selectedDepartureFlight,
-                returnFlight: selectedReturnFlight || null
-            }
-        });
+        navigate(ROUTES.BOOK_CONFIRM);
     };
 
 

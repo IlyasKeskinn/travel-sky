@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/user";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
 import UserProfile from "./pages/UserProfile";
+import BookConfirm from "./pages/BookConfirm";
 
 
 
@@ -33,6 +34,7 @@ function App() {
       <Route element={<ProtectedRoutes condition={isUserLoggedIn} routes={ROUTES.LOGIN} />}>
         <Route element={<MainLayout />}>
           <Route path={ROUTES.PROFILE} element={<UserProfile />} />
+          <Route path={ROUTES.BOOK_CONFIRM} element={<BookConfirm />} />
         </Route>
       </Route>
 

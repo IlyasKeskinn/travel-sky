@@ -2,7 +2,7 @@ import customSelectStyles from '@/styles/customSelect';
 import debounce from 'lodash/debounce';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FaExchangeAlt } from 'react-icons/fa';
 import { validateLocationsForm } from '@/helpers/validateLocationsForm';
 import { fetchLocationsByIATA } from '@/services/locationService';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router';
 import { ROUTES } from '@/config/routes';
 import { PlaneIcon } from 'lucide-react';
 import { format } from "date-fns";
-import {  SCHIPOL_API_ROUTES } from "@/config/api";
+import { SCHIPOL_API_ROUTES } from "@/config/api";
 import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -36,6 +36,19 @@ const FlightBookingForm = () => {
         }, 300),
         []
     );
+
+    // Load from localStorage
+    useEffect(() => {
+        const storedFlightFilter = JSON.parse(localStorage.getItem('flightFilter'));
+        if (storedFlightFilter) {
+            setFlightFilter(storedFlightFilter);
+        }
+    }, [setFlightFilter]);
+
+    // Save to localStorage whenever flightFilter changes
+    useEffect(() => {
+        localStorage.setItem('flightFilter', JSON.stringify(flightFilter));
+    }, [flightFilter]);
 
     // Handle input changes for arrival location (fetch locations dynamically)
     const handleInputChange = (inputValue) => {
@@ -75,7 +88,7 @@ const FlightBookingForm = () => {
 
                 // If it's an arrival flight, the return leg is a departure flight, so set it to "D"; if not, set it to "A".
                 const returnDirection = flightFilter.isArrivalFlight ? "D" : "A";
-                
+
                 const returnFetchURL = `${SCHIPOL_API_ROUTES.FLIGHTS}?flightDirection=${returnDirection}&scheduleDate=${formattedReturnDate}&route=${route}`;
 
                 // Navigate to the results page
