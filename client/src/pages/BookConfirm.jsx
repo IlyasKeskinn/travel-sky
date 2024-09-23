@@ -15,6 +15,9 @@ const BookConfirm = () => {
     const resetReturnFlight = useResetRecoilState(selectedReturnFlightAtom);
     const resetFlightFilter = useResetRecoilState(flightFilterAtom);
 
+    console.log(selectedDepartureFlight);
+    
+
     useEffect(() => {
         if (!selectedDepartureFlight) {
             navigate(ROUTES.HOME);

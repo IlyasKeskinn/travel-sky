@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const connectMongoDB = require("./lib/db");
 const dotenv = require("dotenv");
 const app = express();
@@ -17,11 +18,15 @@ const corsOptions = {
 
 // Enable CORS for all routes
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const userRoute = require("./routes/user.route");
+const flightReservationRoute = require("./routes/flightReservation.route");
+
 app.use("/api/user", userRoute);
+app.use("/api/reservation", flightReservationRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
