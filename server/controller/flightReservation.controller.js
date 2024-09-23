@@ -15,6 +15,8 @@ const createFlightReservation = async (req, res) => {
       flightName,
       scheduleDate,
       scheduleDateTime,
+      prefixIATA,
+      terminal,
     } = req.body;
 
     // Retrieve user ID and email from the request object
@@ -42,6 +44,8 @@ const createFlightReservation = async (req, res) => {
       flightName,
       scheduleDate,
       scheduleDateTime,
+      airlineIATA: prefixIATA,
+      ...(terminal && { terminal }), // Only include terminal if it exists
     });
 
     // Save the new flight reservation to the database
@@ -88,7 +92,6 @@ const fetchFlightByBookingNumber = async (req, res) => {
     if (!flight) {
       return res.status(404).json({ error: "Flight not found" });
     }
-    
     // Return the flight reservation with a 200 status code
     return res.status(200).json(flight);
   } catch (error) {

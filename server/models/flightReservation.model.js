@@ -47,6 +47,15 @@ const flightReservationScehema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    airlineIATA: {
+      type: String,
+      required: true,
+    },
+    terminal: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
