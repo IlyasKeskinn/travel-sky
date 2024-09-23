@@ -9,13 +9,14 @@ import userAtom from "./atoms/user";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
 import UserProfile from "./pages/UserProfile";
 import BookConfirm from "./pages/BookConfirm";
+import Flights from "./pages/Flights";
 
 
 
 function App() {
   const user = useRecoilValue(userAtom); // Get the current user from Recoil state
   const isUserLoggedIn = user?._id ? true : false;
-  
+
 
   return (
     <Routes>
@@ -33,6 +34,7 @@ function App() {
       {/* Protected route for authenticated users */}
       <Route element={<ProtectedRoutes condition={isUserLoggedIn} routes={ROUTES.LOGIN} />}>
         <Route element={<MainLayout />}>
+          <Route path={ROUTES.FLIGHTS} element={<Flights />} />
           <Route path={ROUTES.PROFILE} element={<UserProfile />} />
           <Route path={ROUTES.BOOK_CONFIRM} element={<BookConfirm />} />
         </Route>

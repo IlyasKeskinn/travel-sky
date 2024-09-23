@@ -71,7 +71,9 @@ const fetchUserFlights = async (req, res) => {
     }
 
     // Fetch all flight reservations for the specified user ID
-    const flights = await FlightReservation.find({ User: userId });
+    const flights = await FlightReservation.find({ User: userId })
+      .populate("User", "email name")
+      .sort({ createdAt: -1 });
 
     // Return the list of flights with a 200 status code
     return res.status(200).json(flights);

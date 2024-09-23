@@ -14,7 +14,7 @@ export const API_ROUTES = {
   LOGOUT: `${API_URL}/user/logout`,
 
   //for flight reservation
-  GET_USER_FLIGHTS: `${API_URL}/reservation/fetchFlight`,
+  GET_USER_FLIGHTS: `${API_URL}/reservation/fetchFlights`,
   GET_FLIGHTS_BY_BOOKING_NUMBER: `${API_URL}/reservation/fetchFlight`,
   CREATE_FLIGHT_RESERVATION: `${API_URL}/reservation/createReservation`,
 };
